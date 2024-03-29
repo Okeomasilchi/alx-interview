@@ -4,7 +4,7 @@
 import sys
 
 
-def print_stats(ts, scode):
+def log_data(ts, scode):
     """
     Print statistics based on the total file
     size and the counts of each
@@ -70,11 +70,11 @@ def main():
                 ) + 1
 
             if i % 10 == 0:
-                print_stats(ts, scode)
-    except KeyboardInterrupt:
+                log_data(ts, scode)
+    except KeyboardInterrupt as e:
         pass
 
-    print_stats(ts, scode)
+    log_data(ts, scode)
 
 
 if __name__ == "__main__":
