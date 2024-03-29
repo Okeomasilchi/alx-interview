@@ -72,7 +72,9 @@ def main():
             if i % 10 == 0:
                 print_stats(ts, scode)
     except KeyboardInterrupt:
-        print_stats(ts, scode)
+        pass
+
+    print_stats(ts, scode)
 
 
 if __name__ == "__main__":
