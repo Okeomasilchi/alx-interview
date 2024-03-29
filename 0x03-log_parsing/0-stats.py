@@ -1,7 +1,11 @@
 #!/usr/bin/python3
+"""
+Log Parsing
+"""
 
 import sys
 import re
+
 
 # Define regex pattern to extract relevant information
 pattern = re.compile(
