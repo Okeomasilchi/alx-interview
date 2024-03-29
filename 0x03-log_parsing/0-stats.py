@@ -1,41 +1,43 @@
 #!/usr/bin/python3
 """Log Parsing"""
 
+
 import sys
-import re
 
 
-# Define regex pattern to extract relevant information
-pattern = re.compile(r'^<your-regex-pattern-here>')
+def print_stats(total_size, status_codes):
+    print(f"File size: {total_size}")
+    for code, count in sorted(status_codes.items()):
+        print(f"{code}: {count}")
 
-# Initialize variables
-total_file_size = 0
-status_code_count = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-line_count = 0
 
-try:
-    # Read stdin line by line
-    for line in sys.stdin:
-        # Match the line format
-        match = pattern.match(line)
-        if match:
-            status_code, file_size = map(int, match.groups())
-            # Update total file size
-            total_file_size += file_size
-            # Update status code count
-            status_code_count[status_code] += 1
-            line_count += 1
+def parse_line(line):
+    parts = line.split()
+    if len(parts) < 7:
+        return None
+    ip_address = parts[0]
+    status_code = parts[-2]
+    file_size = int(parts[-1])
+    return ip_address, status_code, file_size
 
-        # Print statistics after every 10 lines
-        if line_count % 10 == 0:
-            print(f"Total file size: {total_file_size}")
-            for code in sorted(status_code_count.keys()):
-                if status_code_count[code] > 0:
-                    print(f"{code}: {status_code_count[code]}")
 
-except KeyboardInterrupt:
-    # Print final statistics upon keyboard interruption
-    print(f"Total file size: {total_file_size}")
-    for code in sorted(status_code_count.keys()):
-        if status_code_count[code] > 0:
-            print(f"{code}: {status_code_count[code]}")
+def main():
+    total_size = 0
+    status_codes = {}
+
+    try:
+        for i, line in enumerate(sys.stdin, 1):
+            parsed = parse_line(line)
+            if parsed is None:
+                continue
+            ip_address, status_code, file_size = parsed
+            total_size += file_size
+            status_codes[status_code] = status_codes.get(status_code, 0) + 1
+
+            if i % 10 == 0:
+                print_stats(total_size, status_codes)
+    except KeyboardInterrupt:
+        print_stats(total_size, status_codes)
+
+if __name__ == "__main__":
+    main()
