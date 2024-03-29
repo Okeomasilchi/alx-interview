@@ -4,26 +4,26 @@
 import sys
 
 
-def print_stats(total_size, status_codes):
+def print_stats(ts, scode):
     """
     Print statistics based on the total file
     size and the counts of each
     status code.
 
     Args:
-        total_size (int): The total size of all files processed.
-        status_codes (dict): A dictionary containing counts of
+        ts (int): The total size of all files processed.
+        scode (dict): A dictionary containing counts of
         each status code
 
     Returns:
         None
     """
-    print(f"File size: {total_size}")
-    for code, count in sorted(status_codes.items()):
+    print(f"File size: {ts}")
+    for code, count in sorted(scode.items()):
         print(f"{code}: {count}")
 
 
-def parse_line(line):
+def parse_line(data):
     """
     Parse a log line to extract relevant information.
 
@@ -35,7 +35,7 @@ def parse_line(line):
         status code, and file size if parsing is successful,
         otherwise None.
     """
-    parts = line.split()
+    parts = data.split()
     if len(parts) < 9:
         return None
     ip_address = parts[0]
@@ -54,8 +54,8 @@ def main():
     Returns:
         None
     """
-    total_size = 0
-    status_codes = {}
+    ts = 0
+    scode = {}
 
     try:
         for i, line in enumerate(sys.stdin, 1):
@@ -63,18 +63,16 @@ def main():
             if parsed is None:
                 continue
             ip_address, status_code, file_size = parsed
-            total_size += file_size
-            status_codes[status_code] = status_codes.get(
+            ts += file_size
+            scode[status_code] = scode.get(
                 status_code,
                 0
                 ) + 1
 
             if i % 10 == 0:
-                print_stats(total_size, status_codes)
+                print_stats(ts, scode)
     except KeyboardInterrupt:
-        pass
-
-    print_stats(total_size, status_codes)
+        print_stats(ts, scode)
 
 
 if __name__ == "__main__":
