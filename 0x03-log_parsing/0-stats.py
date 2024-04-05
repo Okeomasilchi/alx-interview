@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This is a log parsing module """
+"""log parsing module"""
 
 import sys
 
