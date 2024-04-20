@@ -5,6 +5,15 @@ request(url, function (error, response, body) {
   if (error) {
     console.log(error);
   } else {
-    console.log(JSON.parse(body).title);
+    const { characters } = JSON.parse(body);
+    characters.forEach(character => {
+      request(character, function (error, response, body) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(JSON.parse(body).name);
+        }
+      });
+    });
   }
 });
