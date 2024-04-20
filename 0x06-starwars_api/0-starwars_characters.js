@@ -6,14 +6,14 @@ request(url, function (error, response, body) {
     console.log(error);
   } else {
     const { characters } = JSON.parse(body);
-    characters.forEach(character => {
-      request(character, function (error, response, body) {
+    for (let index = 0; index < characters.length; index++) {
+      request(characters[index], function (error, response, body) {
         if (error) {
           console.log(error);
         } else {
           console.log(JSON.parse(body).name);
         }
       });
-    });
+    }
   }
 });
