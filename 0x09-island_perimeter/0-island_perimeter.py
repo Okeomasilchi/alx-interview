@@ -4,10 +4,8 @@ island_perimeter(grid): returns the
 perimeter of the island described in grid
 """
 
-from typing import List
 
-
-def island_perimeter(grid: List[int]) -> int:
+def island_perimeter(grid) -> int:
     """
     Calculates the perimeter of an island represented
     by a grid.
