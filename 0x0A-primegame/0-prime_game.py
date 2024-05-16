@@ -6,22 +6,24 @@ Prime Game for Alx Intervieew
 from typing import List, Optional
 
 
-from typing import List, Optional
-
 def isWinner(x: int, nums: List[int]) -> Optional[str]:
     """
-    Determines the winner of a game played over multiple rounds.
+    Determines the winner of a game played over multiple
+    rounds.
 
     Parameters:
     - x (int): The number of rounds played.
-    - nums (List[int]): A list containing the maximum integer for each round.
+    - nums (List[int]): A list containing the maximum
+        integer for each round.
 
     Returns:
-    - Optional[str]: The name of the player who won the most rounds ('Maria' or 'Ben').
-      Returns 'None' if there is a tie.
+    - Optional[str]: The name of the player who won the most
+        rounds ('Maria' or 'Ben'). Returns 'None' if there is
+        a tie.
 
-    The function implements the Sieve of Eratosthenes algorithm to determine the number of primes
-    for each round and decides the winner based on the parity of the count of remaining primes.
+    The function implements the Sieve of Eratosthenes algorithm
+    for each round and decides the winner based on the parity of
+    the count of remaining primes.
     """
     maria_wins = 0
     ben_wins = 0
