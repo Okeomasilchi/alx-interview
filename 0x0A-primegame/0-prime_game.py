@@ -6,80 +6,41 @@ Prime Game for Alx Intervieew
 from typing import List, Optional
 
 
+from typing import List, Optional
+
 def isWinner(x: int, nums: List[int]) -> Optional[str]:
     """
-    Determines the winner of the prime game.
+    Determines the winner of a game played over multiple rounds.
 
-    Args:
-        x (int): The number of rounds to be played.
-        nums (List[int]): A list of integers representing the
-            number of stones in each round.
+    Parameters:
+    - x (int): The number of rounds played.
+    - nums (List[int]): A list containing the maximum integer for each round.
 
     Returns:
-        Optional[str]: The name of the winner (either "Maria" or "Ben"),
-            or None if it's a tie.
+    - Optional[str]: The name of the player who won the most rounds ('Maria' or 'Ben').
+      Returns 'None' if there is a tie.
+
+    The function implements the Sieve of Eratosthenes algorithm to determine the number of primes
+    for each round and decides the winner based on the parity of the count of remaining primes.
     """
-
-    def is_prime(n: int) -> bool:
-        """
-        Checks if a number is prime.
-
-        Args:
-            n (int): The number to be checked.
-
-        Returns:
-            bool: True if the number is prime, False otherwise.
-        """
-        if n < 2:
-            return False
-        for i in range(2, int(n ** 0.5) + 1):
-            if n % i == 0:
-                return False
-        return True
-
-    def get_primes(n: int) -> List[int]:
-        """
-        Generates a list of prime numbers up to a given number.
-
-        Args:
-            n (int): The upper limit for generating prime numbers.
-
-        Returns:
-            List[int]: A list of prime numbers.
-        """
-        primes = []
-        for i in range(2, n + 1):
-            if is_prime(i):
-                primes.append(i)
-        return primes
-
-    def can_win(primes: List[int], n: int) -> bool:
-        """
-        Checks if a player can win a round.
-
-        Args:
-            primes (List[int]): A list of prime numbers.
-            n (int): The number of stones in the round.
-
-        Returns:
-            bool: True if the player can win, False otherwise.
-        """
-        if n in primes:
-            return True
-        for prime in primes:
-            if n % prime == 0:
-                return True
-        return False
-
     maria_wins = 0
     ben_wins = 0
 
-    for i in range(x):
-        primes = get_primes(nums[i])
-        if can_win(primes, nums[i]):
-            maria_wins += 1
-        else:
+    for n in nums:
+        primes = [True] * (n + 1)
+        primes[0] = primes[1] = False
+
+        for i in range(2, int(n ** 0.5) + 1):
+            if primes[i]:
+                for j in range(i * i, n + 1, i):
+                    primes[j] = False
+
+        remaining_primes = [i for i in range(2, n + 1) if primes[i]]
+
+        if len(remaining_primes) % 2 == 0:
             ben_wins += 1
+        else:
+            maria_wins += 1
 
     if maria_wins > ben_wins:
         return "Maria"
